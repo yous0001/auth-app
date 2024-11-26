@@ -5,7 +5,7 @@ export const generateTokenAndSetCookie=(res,userID)=>{
     const token=jwt.sign({userID},process.env.JWT_SECRET,{
         expiresIn:"7d"
     })
-    res.cookies("token",token,{
+    res.cookie("token",token,{
         httpOnly:true,//to prevent xss
         secure:process.env.NODE_ENV==="production",//true=>https false=>http
         sameSite:"strict", //prevent csrf
