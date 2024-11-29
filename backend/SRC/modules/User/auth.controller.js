@@ -1,5 +1,7 @@
 import { generateTokenAndSetCookie } from '../../Utils/generateTokenAndSetCookie.js';
 import { generateVerificationToken } from '../../Utils/generateVerificationCode.js';
+import { verificationEmailTemplete } from '../Services/emailTemplates.js';
+import sendmailservice from '../Services/sendmail.js';
 import User from './../../../DB/models/User.model.js';
 import bcrypt from "bcryptjs";
 
@@ -26,7 +28,16 @@ export const signup=async (req,res)=>{
             verificationTokenExpires:Date.now() + (24*60*60*1000) // 1day (24 hours)
         })
 
+        
         generateTokenAndSetCookie(res,newUser._id)
+        
+        await sendmailservice({
+                    to:email,
+                    subject:'verify email',
+                    message:verificationEmailTemplete.replace('{{code}}',verificationToken),
+                    attachments:[]
+                    })
+                    
         res.status(201).json({success:true,message:"user create successfully",
             user:{
                 ...newUser._doc,

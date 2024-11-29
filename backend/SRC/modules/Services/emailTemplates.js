@@ -49,6 +49,7 @@ export const verificationEmailTemplete=`
             background-color: #28a745;
             border-radius: 8px;
             text-decoration: none;
+            letter-spacing:5px;
         }
         .footer {
             background-color: #f1f1f1;

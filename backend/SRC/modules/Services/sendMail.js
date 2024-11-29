@@ -3,12 +3,7 @@ import { config } from "dotenv";
 config()
 
 
-const sendmailservice=async({
-    to='',
-    subject='no-reply',
-    message=Message,
-    attachments=[]
-    })=>{
+const sendmailservice=async({ to = '', subject = 'no-reply', message = '<h1>Hello World</h1>', attachments = [] })=>{
     const transporter=nanomailer.createTransport({
         host:'localhost',
         service:'gmail',
@@ -28,11 +23,5 @@ const sendmailservice=async({
     });
     return info.accepted.length?true:false
 } 
-sendmailservice({
-    to:"mad33833@gmail.com",
-    subject:'verification email',
-    message:Message,
-    attachments:[]
-    });
 
 export default sendmailservice
