@@ -83,8 +83,43 @@ export const verifyEmail=async (req,res)=>{
     }
 }
 export const login=async (req,res)=>{
-    res.send("login route")
+    const {email,password}=req.body;
+    try{
+    if(!email||!password){
+        return res.status(400).json({success:false,message:"please fill all data fields"})
+    }
+    const user=await User.findOne({email,isVerified:true})
+    if(!user){
+        return res.status(400).json({
+            success:false,
+            message:"invalid login credintials"
+        })
+    }
+    const isPasswordCorrect=await bcrypt.compare(password,user.password)
+    if(!isPasswordCorrect){
+        return res.status(400).json({
+            success:false,
+            message:"invalid login credintials"
+        })
+    }
+    generateTokenAndSetCookie(res,user._id);
+    user.lastLogin=new Date();
+    await user.save();
+    return res.status(200).json({
+        success:true,
+        message:"login success",
+        user:{
+            ...user._doc,
+            password:null
+        }
+    })
+    }catch(err){
+        return res.status(500).json({success:false,message:err.message})
+    }
+    
+
 }
 export const logout=async (req,res)=>{
-    res.send("logout route")
+    res.clearCookie("token")
+    res.status(200).json({message:"log out success"})
 }
