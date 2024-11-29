@@ -45,7 +45,7 @@ export const signup=async (req,res)=>{
             }
         })
     }catch(err){
-        return res.status(500).json({success:false,message:err})
+        return res.status(500).json({success:false,message:err.message})
     }
 }
 
@@ -79,7 +79,7 @@ export const verifyEmail=async (req,res)=>{
             message:"verified success"
         })
     }catch(err){
-
+        return res.status(500).json({success:false,message:err.message})
     }
 }
 export const login=async (req,res)=>{
