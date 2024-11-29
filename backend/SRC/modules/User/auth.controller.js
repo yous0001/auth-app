@@ -1,6 +1,6 @@
 import { generateTokenAndSetCookie } from '../../Utils/generateTokenAndSetCookie.js';
 import { generateVerificationToken } from '../../Utils/generateVerificationCode.js';
-import { verificationEmailTemplete } from '../Services/emailTemplates.js';
+import { verificationEmailTemplete, welecomeEmailTemplete } from '../Services/emailTemplates.js';
 import sendmailservice from '../Services/sendmail.js';
 import User from './../../../DB/models/User.model.js';
 import bcrypt from "bcryptjs";
@@ -50,7 +50,38 @@ export const signup=async (req,res)=>{
 }
 
 
+export const verifyEmail=async (req,res)=>{
+    const {code}=req.body;
+    try{
+        const user=await User.findOne({
+            verificationToken:code,
+            verificationTokenExpires:{ $gt: Date.now() }
+        })
+        if(!user){
+            return res.status(404).json({
+                success:false,
+                message:"invalid or expired code"
+            })
+        }
+        user.isVerified=true;
+        user.verificationToken=null;
+        user.verificationTokenExpires=null
+        await user.save();
 
+        await sendmailservice({
+            to:user.email,
+            subject:'verify email',
+            message:welecomeEmailTemplete.replace(`[User's Name]`,user.name),
+            attachments:[]
+            })
+        return res.status(200).json({
+            success:true,
+            message:"verified success"
+        })
+    }catch(err){
+
+    }
+}
 export const login=async (req,res)=>{
     res.send("login route")
 }
