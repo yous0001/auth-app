@@ -174,7 +174,7 @@ export const resetPassword=async (req,res)=>{
         await sendmailservice({
             to:user.email,
             subject:'password reset success',
-            message:resetPasswordSuccessTemplete,
+            message:resetPasswordSuccessTemplete.replace("[User's Name]",user.name),
             attachments:[]
             })
         return res.status(200).json({success:true,message:"reset password success"})
