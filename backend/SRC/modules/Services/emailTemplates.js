@@ -136,7 +136,7 @@ export const resetPasswordRequestTemplete=`
             padding: 15px 25px;
             font-size: 18px;
             font-weight: bold;
-            color: #ffffff;
+            color: #ffffff !important;
             background-color: #28a745;
             border-radius: 8px;
             text-decoration: none;

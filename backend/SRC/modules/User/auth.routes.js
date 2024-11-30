@@ -7,6 +7,8 @@ router.post('/signup', authController.signup)
 router.post('/login', authController.login)
 router.post('/logout', authController.logout)
 router.post('/verifyemail',authController.verifyEmail)
+router.post('/forgetpassword',authController.forgetPassword)
+router.put('/resetpassword/:token',authController.resetPassword)
 
 
 export default router;
