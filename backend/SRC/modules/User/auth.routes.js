@@ -3,6 +3,7 @@ import * as authController from "./auth.controller.js"
 
 const router =Router();
 
+router.get('/checkauth',verifyToken,checkAuth)
 router.post('/signup', authController.signup)
 router.post('/login', authController.login)
 router.post('/logout', authController.logout)
