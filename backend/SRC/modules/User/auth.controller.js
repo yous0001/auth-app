@@ -182,3 +182,15 @@ export const resetPassword=async (req,res)=>{
         return res.status(500).json({success:false,message:err.message})    
     }
 }
+
+export const checkAuth=async (req,res,next)=>{
+    try {
+        const user =await User.findById(req.userID).select('-password');
+        if (!user) {
+            return res.status(401).json({ success: false, message: "unauthorized" });
+        }
+        return res.status(200).json({success:true,user})
+    } catch (err) {
+        return res.status(500).json({success:false,message:err.message})    
+    }
+}
